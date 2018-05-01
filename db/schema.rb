@@ -38,4 +38,6 @@ ActiveRecord::Schema.define(version: 20180501114708) do
     t.date "updated_at"
   end
 
+  add_foreign_key "invoices", "customers"
+  add_foreign_key "invoices", "merchants"
 end
