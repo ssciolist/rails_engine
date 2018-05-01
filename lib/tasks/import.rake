@@ -86,4 +86,14 @@ namespace :import do
         end
       end
     end
+
+  desc "Import all csv files"
+    task :all => [:environment] do
+      Rake::Task['import:merchants'].execute
+      Rake::Task['import:items'].execute
+      Rake::Task['import:customers'].execute
+      Rake::Task['import:invoices'].execute
+      Rake::Task['import:transactions'].execute
+      Rake::Task['import:invoice_items'].execute
+    end
 end
