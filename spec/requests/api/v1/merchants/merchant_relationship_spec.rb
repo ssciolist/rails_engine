@@ -18,9 +18,10 @@ describe 'Merchants API relations' do
 
   it '\invoices loads a collection of invoices associated with one merchant' do
     merchant = create(:merchant)
-    merchant.invoices.create(attributes_for(:invoice))
-    merchant.invoices.create(attributes_for(:invoice))
-    merchant.invoices.create(attributes_for(:invoice))
+    customer = create(:customer)
+    merchant.invoices.create!(attributes_for(:invoice, customer_id: customer.id))
+    merchant.invoices.create!(attributes_for(:invoice, customer_id: customer.id))
+    merchant.invoices.create!(attributes_for(:invoice, customer_id: customer.id))
 
     get "/api/v1/merchants/#{merchant.id}/invoices"
 
@@ -28,6 +29,6 @@ describe 'Merchants API relations' do
 
     expect(response).to be_success
     expect(invoices.count).to eq(3)
-    invoices.each { |invoice| expect(invoice['merchant_id'].to eq(merchant.id)) }
+    invoices.each { |invoice| expect(invoice['merchant_id']).to eq(merchant.id) }
   end
 end
