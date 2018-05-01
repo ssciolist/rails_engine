@@ -7,6 +7,7 @@ SimpleCov.start do
 end
 
 require_relative './support/factory_bot'
+
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
@@ -61,4 +62,11 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+end
+
+Shoulda::Matchers.configure do |c|
+  c.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
