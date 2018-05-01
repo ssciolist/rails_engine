@@ -24,7 +24,7 @@ describe 'Merchants API index' do
     expect(merchant['id']).to eq(id)
   end
 
-  it 'can find me a merchant by name' do
+  it 'can find a merchant by name' do
     merchant = create(:merchant, name: 'Pierre', created_at: Date.new(2001,2,3), updated_at: Date.new(2011,2,3))
 
     get "/api/v1/merchants/find?name=Pierre"
@@ -32,8 +32,55 @@ describe 'Merchants API index' do
     search_result = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(merchant['name']).to eq(search_result[:name])
-    expect(merchant['created_at']).to eq(search_result[:created_at])
-    expect(merchant['updated_at']).to eq(search_result[:updated_at])
+    expect(search_result['name']).to eq(merchant[:name])
+    expect(search_result['id']).to eq(merchant[:id])
+  end
+
+  it 'can find a merchant by id' do
+    merchant = create(:merchant, name: 'Joja Mart', created_at: Date.new(2002,2,3), updated_at: Date.new(2012,2,3))
+
+    get "/api/v1/merchants/find?id=#{merchant.id}"
+
+    search_result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(search_result['name']).to eq(merchant[:name])
+    expect(search_result['id']).to eq(merchant[:id])
+  end
+
+  it 'can find a merchant by created_at' do
+    merchant = create(:merchant, name: 'Mouse', created_at: Date.new(2003,2,3), updated_at: Date.new(2013,2,3))
+
+    get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
+
+    search_result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(search_result['name']).to eq(merchant[:name])
+    expect(search_result['id']).to eq(merchant[:id])
+  end
+
+  it 'can find a merchant by created_at' do
+    merchant = create(:merchant, name: 'Mouse', created_at: Date.new(2003,2,3), updated_at: Date.new(2013,2,3))
+
+    get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
+
+    search_result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(search_result['name']).to eq(merchant[:name])
+    expect(search_result['id']).to eq(merchant[:id])
+  end
+
+  it 'can find a merchant by updated_at' do
+    merchant = create(:merchant, name: 'Mouse', created_at: Date.new(2004,2,3), updated_at: Date.new(2014,2,3))
+
+    get "/api/v1/merchants/find?updated_at=#{merchant.updated_at}"
+
+    search_result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(search_result['name']).to eq(merchant[:name])
+    expect(search_result['id']).to eq(merchant[:id])
   end
 end
