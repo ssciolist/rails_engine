@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'Merchants API item relation' do
-  it 'loads a collection of items associated with one merchant' do
+describe 'Merchants API relations' do
+  it '\items loads a collection of items associated with one merchant' do
     merchant = create(:merchant)
     merchant.items.create(attributes_for(:item))
     merchant.items.create(attributes_for(:item))
@@ -12,6 +12,22 @@ describe 'Merchants API item relation' do
     items = JSON.parse(response.body)
 
     expect(response).to be_success
-    items.each { |i| expect(i['merchant_id']).to eq(merchant.id)}
+    expect(items.count).to eq(3)
+    items.each { |item| expect(item['merchant_id']).to eq(merchant.id)}
+  end
+
+  it '\invoices loads a collection of invoices associated with one merchant' do
+    merchant = create(:merchant)
+    merchant.invoices.create(attributes_for(:invoice))
+    merchant.invoices.create(attributes_for(:invoice))
+    merchant.invoices.create(attributes_for(:invoice))
+
+    get "/api/v1/merchants/#{merchant.id}/invoices"
+
+    invoices = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoices.count).to eq(3)
+    invoices.each { |invoice| expect(invoice['merchant_id'].to eq(merchant.id)) }
   end
 end
