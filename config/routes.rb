@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         get 'find_all', to: 'search#index'
       end
       resources :merchants, only: [:index, :show]
+      resources :invoices, only: [:index, :show]
     end
   end
 
