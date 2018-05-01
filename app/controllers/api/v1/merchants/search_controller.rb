@@ -1,6 +1,13 @@
 class Api::V1::Merchants::SearchController < ApplicationController
   def show
-    render json: Merchant.find_by(merchant_params)
+    if merchant_params.keys.first == 'name'
+      render json: Merchant.where('lower(name) = ?', merchant_params.values.first.downcase).first
+    else
+      render json: Merchant.find_by(merchant_params)
+    end
+  end
+
+  def index
   end
 
   private

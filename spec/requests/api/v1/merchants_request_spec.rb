@@ -36,6 +36,18 @@ describe 'Merchants API index' do
     expect(search_result['id']).to eq(merchant[:id])
   end
 
+  it 'can find a merchant by upcased name' do
+    merchant = create(:merchant, name: 'Pierre', created_at: Date.new(2001,2,3), updated_at: Date.new(2011,2,3))
+
+    get "/api/v1/merchants/find?name=PIERRE"
+
+    search_result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(search_result['name']).to eq(merchant[:name])
+    expect(search_result['id']).to eq(merchant[:id])
+  end
+
   it 'can find a merchant by id' do
     merchant = create(:merchant, name: 'Joja Mart', created_at: Date.new(2002,2,3), updated_at: Date.new(2012,2,3))
 
