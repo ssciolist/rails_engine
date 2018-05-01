@@ -5,4 +5,9 @@ Rails.application.routes.draw do
       resources :merchants, only: [:index, :show]
     end
   end
+
+  scope 'api/vi/merchants' do
+    get '/find', to: 'search#show'
+    get '/find_all', to: 'search#index'
+  end
 end
