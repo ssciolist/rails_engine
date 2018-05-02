@@ -1,5 +1,5 @@
 class Api::V1::Merchants::SearchController < ApplicationController
-  def show 
+  def show
     if merchant_params.keys.first == 'name'
       render json: Merchant.where('lower(name) = ?', merchant_params.values.first.downcase).first
     else
@@ -8,6 +8,7 @@ class Api::V1::Merchants::SearchController < ApplicationController
   end
 
   def index
+    render json: Transaction.where(transaction_params)
   end
 
   private
