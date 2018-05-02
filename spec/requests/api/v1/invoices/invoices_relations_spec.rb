@@ -32,8 +32,25 @@ describe 'Invoices API relations' do
     expect(invoice_items.count).to eq(3)
     invoice_items.each { |invoice_item| expect(invoice_item['invoice_id']).to eq(invoice.id)}
   end
+
   it '/items returns items associated with one invoice' do
+    merchant = create(:merchant)
+    customer = create(:customer)
+    item = create(:item, merchant: merchant)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id))
+    invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id))
+    invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id))
+
+    get "/api/v1/invoices/#{invoice.id}/items"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(3)
+    items.each { |item| expect(item['merchant_id']).to eq(merchant.id)}
   end
+
   it '/customer returns the associated customer of an invoice' do
   end
   it '/merchant returns the associated merchant of an invoice' do
