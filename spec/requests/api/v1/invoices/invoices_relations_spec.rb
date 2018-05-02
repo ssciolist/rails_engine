@@ -9,13 +9,27 @@ describe 'Invoices API relations' do
     get "/api/v1/invoices/#{invoice.id}/transactions"
 
     transactions = JSON.parse(response.body)
-binding.pry
+
     expect(response).to be_success
     expect(transactions.count).to eq(5)
     transactions.each { |transaction| expect(transaction['invoice_id']).to eq(invoice.id)}
-
   end
+
   it '/invoice_items returns invoice_items associated with one invoice' do
+    merchant = create(:merchant)
+    customer = create(:customer)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    invoice.invoice_items.create(attributes_for(:invoice_item))
+    invoice.invoice_items.create(attributes_for(:invoice_item))
+    invoice.invoice_items.create(attributes_for(:invoice_item))
+
+    get "/api/v1/invoices/#{invoice.id}/invoice_items"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoice_items.count).to eq(5)
+    invoice_items.each { |invoice_item| expect(invoice_item['invoice_id']).to eq(invoice.id)}
   end
   it '/items returns items associated with one invoice' do
   end
