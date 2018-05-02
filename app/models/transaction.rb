@@ -5,4 +5,8 @@ class Transaction < ApplicationRecord
                         :created_at,
                         :updated_at
   belongs_to :invoice
+
+  def self.random
+    order('random()').limit(1).take
+  end
 end

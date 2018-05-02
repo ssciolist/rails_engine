@@ -163,4 +163,16 @@ describe 'Transactions API index' do
     expect(response).to be_success
     expect(result.count).to eq(2)
   end
+
+  it 'can return a random Transaction' do
+    customer = create(:customer)
+    merchant = create(:merchant)
+    invoice = create(:invoice_with_transactions, customer_id: customer.id, merchant_id: merchant.id)
+
+    get '/api/v1/transactions/random'
+
+    result = JSON.parse(response.body)
+
+    expect(result['credit_card_number'].is_a?(Integer))
+  end
 end
