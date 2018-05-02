@@ -9,9 +9,9 @@ describe 'Invoices API relations' do
     get "/api/v1/invoices/#{invoice.id}/transactions"
 
     transactions = JSON.parse(response.body)
-
+binding.pry
     expect(response).to be_success
-    expect(invoices.count).to eq(5)
+    expect(transactions.count).to eq(5)
     transactions.each { |transaction| expect(transaction['invoice_id']).to eq(invoice.id)}
 
   end
