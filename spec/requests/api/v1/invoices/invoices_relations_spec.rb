@@ -52,7 +52,28 @@ describe 'Invoices API relations' do
   end
 
   it '/customer returns the associated customer of an invoice' do
+    merchant = create(:merchant)
+    customer = create(:customer)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+
+    get "/api/v1/invoices/#{invoice.id}/customer"
+
+    result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(result['id']).to eq(customer.id)
   end
+
   it '/merchant returns the associated merchant of an invoice' do
+    merchant = create(:merchant)
+    customer = create(:customer)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+
+    get "/api/v1/invoices/#{invoice.id}/merchant"
+
+    result = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(result['id']).to eq(merchant.id)
   end
 end
