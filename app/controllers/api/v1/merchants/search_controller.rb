@@ -8,7 +8,7 @@ class Api::V1::Merchants::SearchController < ApplicationController
   end
 
   def index
-    render json: Transaction.where(transaction_params)
+    render json: Merchant.where(merchant_params)
   end
 
   private
