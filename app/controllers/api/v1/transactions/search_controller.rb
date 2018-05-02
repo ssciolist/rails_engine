@@ -4,6 +4,7 @@ class Api::V1::Transactions::SearchController < ApplicationController
   end
 
   def index
+    render json: Transaction.where(transaction_params)
   end
 
   private
