@@ -4,6 +4,10 @@ class Api::V1::Merchants::RevenueController < ApplicationController
   end
 
   def show
-    render json: Merchant.single_revenue.find(params[:id]).revenue, serializer: MerchantRevenueSerializer
+    if params[:date]
+      render json: Merchant.single_revenue_by_date(params[:date]).find(params[:id]).revenue, serializer: MerchantRevenueSerializer
+    else
+      render json: Merchant.single_revenue.find(params[:id]).revenue, serializer: MerchantRevenueSerializer
+    end
   end
 end

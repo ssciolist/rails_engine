@@ -60,7 +60,7 @@ describe 'Merchant API business intelligence' do
       invoice2.transactions.create!(attributes_for(:transaction))
       invoice2.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id, quantity: 1, unit_price: 1600))
 
-      get "/api/v1/merchants/#{merchant.id}/revenue?date=#{invoice2.date}"
+      get "/api/v1/merchants/#{merchant.id}/revenue?date=#{invoice2.updated_at}"
 
       merchant_revenue = JSON.parse(response.body)
 
