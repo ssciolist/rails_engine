@@ -30,13 +30,13 @@ Rails.application.routes.draw do
 
       namespace :items do
         get 'most_revenue', to: 'revenue#index'
+        get 'most_items', to: 'most_items#index'
       end
 
       namespace :customers do
         get ':id/favorite_merchant', to: 'merchants#show'
       end
 
-end
       resources :merchants, only: [:index, :show]
       resources :transactions, only: [:index, :show]
       resources :invoices, only: [:index, :show]
