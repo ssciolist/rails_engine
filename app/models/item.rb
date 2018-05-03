@@ -12,10 +12,13 @@ class Item < ApplicationRecord
   default_scope {order(:id)}
 
   def self.most_revenue(group_size)
-    joins(:invoice_items, invoices: :transactions)
+    unscoped
+    .joins(:invoice_items, invoices: :transactions)
     .where(transactions: {result: "success"})
     .group(:id)
     .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
     .limit(group_size)
   end
 end
+
+Item.joins(:invoice_items, invoices: :transactions).where(transactions: {result: "success"}).group(:id).order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
