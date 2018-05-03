@@ -22,7 +22,7 @@ class Merchant < ApplicationRecord
   def self.single_revenue_by_date(date)
     unscoped
     .joins(invoices: [:transactions, :invoice_items])
-    .where(transactions: {result: 'success'}, invoices: {updated_at: date})
+    .where("transactions.result = 'success' AND Date(invoices.updated_at) = ?", date)
     .select('merchants.id, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .group(:id).order('revenue DESC')
   end
