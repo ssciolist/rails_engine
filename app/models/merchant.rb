@@ -43,12 +43,13 @@ class Merchant < ApplicationRecord
 
   def self.favorite_merchant(customer_id)
     unscoped
-    .select('COUNT(merchants.id) as merchant_count, merchants.name, merchants.id')
+    .select('COUNT(invoices.merchant_id) as merchant_count, merchants.name, merchants.id')
     .joins(invoices: :transactions)
     .where(transactions: {result: "success"}, invoices: {customer_id: customer_id})
     .group(:id)
     .order('merchant_count DESC')
     .limit(1)
+    .first
   end
 
 end
