@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20180501185912) do
   end
 
   create_table "merchants", force: :cascade do |t|
-    t.string "name"
+    t.citext "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
