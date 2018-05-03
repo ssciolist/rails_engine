@@ -4,7 +4,7 @@ FactoryBot.define do
     result "success"
     created_at { Faker::Date.between(22.days.ago, 44.days.ago) }
     updated_at { Faker::Date.between(10.days.ago, Date.today) }
-    invoice 
+    invoice
   end
 
 end

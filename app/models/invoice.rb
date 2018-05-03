@@ -9,4 +9,6 @@ class Invoice < ApplicationRecord
                         :status,
                         :created_at,
                         :updated_at
+
+  default_scope {order(:id)}
 end

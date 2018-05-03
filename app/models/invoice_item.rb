@@ -7,4 +7,6 @@ class InvoiceItem < ApplicationRecord
                         :unit_price,
                         :created_at,
                         :updated_at
+
+  default_scope { order(:id) }
 end
