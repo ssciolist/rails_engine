@@ -12,7 +12,8 @@ class Merchant < ApplicationRecord
   end
 
   def self.single_revenue
-    joins(invoices: [:transactions, :invoice_items])
+    unscoped
+    .joins(invoices: [:transactions, :invoice_items])
     .where(transactions: {result: 'success'})
     .select('merchants.id, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .group(:id).order('revenue DESC')
