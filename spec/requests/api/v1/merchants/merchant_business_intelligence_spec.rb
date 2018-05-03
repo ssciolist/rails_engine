@@ -1,18 +1,20 @@
 require 'rails_helper'
 
 describe 'Merchant API business intelligence' do
-   skip 'returns revenue for a specific merchant' do
+   it 'returns revenue for a specific merchant' do
     merchant = create(:merchant)
+    item = merchant.items.create!(attributes_for(:item))
     customer = create(:customer)
-    invoice = create(:invoice_with_transactions, customer: customer, merchant: merchant)
-
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    invoice.transactions.create!(attributes_for(:transaction))
+    invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id, quantity: 1, unit_price: 1200))
 
     get "/api/v1/merchants/#{merchant.id}/revenue"
 
     merchant_revenue = JSON.parse(response.body)
 
     expect(response).to be_success
-
+    expect(merchant_revenue['revenue']).to eq('12.0')
   end
 
   it 'returns specified number of merchants with the most items' do
