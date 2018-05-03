@@ -21,6 +21,9 @@ Rails.application.routes.draw do
         get 'find_all', to: 'search#index'
       end
       namespace :invoices do
+        get 'random', to: 'random#show'
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
         get ':id/transactions', to: 'transactions#index'
         get ':id/invoice_items', to: 'invoice_items#index'
         get ':id/items', to: 'items#index'
@@ -29,8 +32,16 @@ Rails.application.routes.draw do
       end
 
       namespace :items do
+        get 'random', to: 'random#show'
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
         get 'most_revenue', to: 'revenue#index'
         get 'most_items', to: 'most_items#index'
+      end
+      namespace :invoice_items do
+        get 'random', to: 'random#show'
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
       end
 
       namespace :customers do
