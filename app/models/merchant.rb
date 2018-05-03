@@ -12,7 +12,8 @@ class Merchant < ApplicationRecord
   end
 
   def self.single_revenue
-    joins(invoices: [:transactions, :invoice_items])
+    unscoped
+    .joins(invoices: [:transactions, :invoice_items])
     .where(transactions: {result: 'success'})
     .select('merchants.id, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .group(:id).order('revenue DESC')
@@ -38,6 +39,17 @@ class Merchant < ApplicationRecord
 
   def self.revenue_by_date(date)
 
+  end
+
+  def self.favorite_merchant(customer_id)
+    unscoped
+    .select('COUNT(invoices.merchant_id) as merchant_count, merchants.name, merchants.id')
+    .joins(invoices: :transactions)
+    .where(transactions: {result: "success"}, invoices: {customer_id: customer_id})
+    .group(:id)
+    .order('merchant_count DESC')
+    .limit(1)
+    .first
   end
 
 end
