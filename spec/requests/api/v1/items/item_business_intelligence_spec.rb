@@ -31,15 +31,15 @@ describe 'Item API business intelligence' do
       merchant = create(:merchant)
       item = merchant.items.create!(attributes_for(:item))
 
-      invoice = merchant.invoices.create!(attributes_for(:invoice, created_at: Date.new(2001,2,3), merchant: merchant, customer_id: customer.id))
+      invoice = merchant.invoices.create!(attributes_for(:invoice, updated_at: Date.new(2001,2,3), merchant: merchant, customer_id: customer.id))
       invoice.transactions.create!(attributes_for(:transaction))
       invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id, quantity: 5))
 
-      invoice2 = merchant.invoices.create!(attributes_for(:invoice, created_at: Date.new(2011,2,3), merchant: merchant, customer_id: customer.id))
+      invoice2 = merchant.invoices.create!(attributes_for(:invoice, updated_at: Date.new(2011,2,3), merchant: merchant, customer_id: customer.id))
       invoice2.transactions.create!(attributes_for(:transaction))
       invoice2.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id, quantity: 60))
 
-      invoice3 = merchant.invoices.create!(attributes_for(:invoice, created_at: Date.new(2015,2,3), merchant: merchant, customer_id: customer.id))
+      invoice3 = merchant.invoices.create!(attributes_for(:invoice, updated_at: Date.new(2015,2,3), merchant: merchant, customer_id: customer.id))
       invoice3.transactions.create!(attributes_for(:transaction))
       invoice3.invoice_items.create!(attributes_for(:invoice_item, item_id: item.id, quantity: 700))
 
@@ -49,6 +49,7 @@ describe 'Item API business intelligence' do
       best_day = JSON.parse(response.body)
 
       expect(response).to be_success
+      expect(Date.parse(best_day['best_day'])).to eq(invoice3.updated_at)
     end
   end
 end
