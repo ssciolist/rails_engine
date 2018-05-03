@@ -10,6 +10,10 @@ class Api::V1::InvoiceItems::SearchController < ApplicationController
   private
 
   def search_params
-    { params.keys.first.to_sym => params.values.first }
+    search = { params.keys.first.to_sym => params.values.first }
+    if search.keys.first == :unit_price
+      search[:unit_price] = search[:unit_price].delete('.').to_i
+    end
+    search
   end
 end
