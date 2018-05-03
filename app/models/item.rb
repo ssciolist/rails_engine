@@ -19,4 +19,14 @@ class Item < ApplicationRecord
     .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
     .limit(group_size)
   end
+
+  def self.most_items(group_size)
+    unscoped
+    .select('SUM(invoice_items.quantity) as item_count, items.*')
+    .joins(invoices: :transactions)
+    .where(transactions: {result: 'success'})
+    .group(:id)
+    .order('item_count DESC')
+    .limit(group_size)
+  end
 end
