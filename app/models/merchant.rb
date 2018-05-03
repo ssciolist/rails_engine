@@ -38,7 +38,11 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue_by_date(date)
-
+    date = Date.parse(date)
+    amount = joins(invoices: [:transactions, :invoice_items])
+            .where(transactions: {result: 'success'}, invoices: {created_at: date.beginning_of_day..date.end_of_day})
+            .sum("invoice_items.quantity * invoice_items.unit_price")
+    {"total_revenue"=>"#{amount/100.00}"}
   end
 
   def self.favorite_merchant(customer_id)

@@ -20,5 +20,3 @@ class Item < ApplicationRecord
     .limit(group_size)
   end
 end
-
-Item.joins(:invoice_items, invoices: :transactions).where(transactions: {result: "success"}).group(:id).order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
