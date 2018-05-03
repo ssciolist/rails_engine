@@ -4,4 +4,14 @@ class Customer < ApplicationRecord
                         :last_name,
                         :created_at,
                         :updated_at
+
+  def self.favorite_customer(merchant_id)
+    favorite = joins(invoices: :transactions)
+                .where(transactions: {result: "success"}, invoices: {merchant_id: merchant_id})
+                .order('count_id desc')
+                .group(:id)
+                .count(:id)
+                .first
+    find(favorite[0])
+  end
 end
