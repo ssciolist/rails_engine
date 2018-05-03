@@ -29,4 +29,13 @@ class Item < ApplicationRecord
     .order('item_count DESC')
     .limit(group_size)
   end
+
+  def self.best_day(item_id)
+    unscoped
+    .select('invoices.updated_at')
+    .joins(invoices: :transactions)
+    .where(transactions: {result: 'success'}, items: {id: item_id})
+    .order('invoice_items.quantity DESC')
+    .limit(1)
+  end
 end
