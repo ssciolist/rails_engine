@@ -6,6 +6,8 @@ class Transaction < ApplicationRecord
                         :updated_at
   belongs_to :invoice
 
+  scope :successful, -> { where(result: 'success') }
+
   default_scope {order(:id)}
   def self.random
     order('random()').limit(1).take

@@ -19,6 +19,14 @@ class Merchant < ApplicationRecord
     .group(:id).order('revenue DESC')
   end
 
+  def self.single_revenue_by_date(date)
+    unscoped
+    .joins(invoices: [:transactions, :invoice_items])
+    .where("transactions.result = 'success' AND Date(invoices.updated_at) = ?", date)
+    .select('merchants.id, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+    .group(:id).order('revenue DESC')
+  end
+
   def self.most_items(group_size)
     unscoped
     .select('merchants.*, SUM(invoice_items.quantity) AS item_count')
