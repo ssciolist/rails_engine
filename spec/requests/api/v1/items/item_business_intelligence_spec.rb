@@ -23,6 +23,7 @@ describe 'Item API business intelligence' do
       expect(top_items.first['description']).to eq(item3.description)
       expect(top_items.last['description']).to eq(item1.description)
     end
+  end
 
   describe 'get /api/v1/items/:id/best_day' do
     it 'returns the date with the most sales for the given item using invoice date' do

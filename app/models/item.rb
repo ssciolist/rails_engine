@@ -29,4 +29,7 @@ class Item < ApplicationRecord
     .order('item_count DESC')
     .limit(group_size)
   end
+
+  def self.best_day(item_id)
+  end
 end
