@@ -68,5 +68,4 @@ Rails.application.routes.draw do
       resources :customers, only: [:index, :show]
     end
   end
-
 end
