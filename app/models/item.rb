@@ -11,6 +11,10 @@ class Item < ApplicationRecord
 
   default_scope {order(:id)}
 
+  def self.random
+    order('random()').limit(1).take
+  end
+
   def self.most_revenue(group_size)
     unscoped
     .joins(:invoice_items, invoices: :transactions)
