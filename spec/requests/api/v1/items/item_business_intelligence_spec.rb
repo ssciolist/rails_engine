@@ -52,4 +52,28 @@ describe 'Item API business intelligence' do
       expect(Date.parse(best_day['best_day'])).to eq(invoice3.updated_at)
     end
   end
+
+  describe 'GET /api/v1/items/most_revenue?quantity=x' do
+    it 'returns the top x item instances ranked by revenue' do
+      customer = create(:customer)
+      merchant = create(:merchant)
+      item1 = merchant.items.create!(attributes_for(:item))
+      item2 = merchant.items.create!(attributes_for(:item))
+      item3 = merchant.items.create!(attributes_for(:item))
+      invoice = merchant.invoices.create!(attributes_for(:invoice, merchant: merchant, customer_id: customer.id))
+      invoice.transactions.create!(attributes_for(:transaction))
+      invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item1.id, quantity: 1, unit_price: 1200))
+      invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item2.id, quantity: 1, unit_price: 600))
+      invoice.invoice_items.create!(attributes_for(:invoice_item, item_id: item3.id, quantity: 2, unit_price: 1000))
+
+      get "/api/v1/items/most_revenue?quantity=2"
+
+      top_items = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(top_items.length).to eq(2)
+      expect(top_items.first['description']).to eq(item3.description)
+      expect(top_items.last['description']).to eq(item1.description)
+    end
+  end
 end
