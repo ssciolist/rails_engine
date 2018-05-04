@@ -14,4 +14,8 @@ class Customer < ApplicationRecord
                 .first
     find(favorite[0])
   end
+
+  def self.random
+    order('random()').limit(1).take
+  end
 end
