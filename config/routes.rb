@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         get 'most_revenue', to: 'most_revenue#index'
         get 'most_items', to: 'most_items#index'
         get ':id/customers_with_pending_invoices', to: 'customers#index'
-        get ':id/favorite_customer', to: 'customers#show'
+        get ':id/favorite_customer', to: 'customer#show'
       end
       namespace :transactions do
         get 'random', to: 'random#show'
