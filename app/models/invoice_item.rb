@@ -9,4 +9,8 @@ class InvoiceItem < ApplicationRecord
                         :updated_at
 
   default_scope { order(:id) }
+
+  def self.random
+    order('random()').limit(1).take
+  end
 end

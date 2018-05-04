@@ -38,7 +38,8 @@ class Merchant < ApplicationRecord
   end
 
   def self.most_revenue(limit)
-    joins(invoices: [:transactions, :invoice_items])
+    unscoped
+    .joins(invoices: [:transactions, :invoice_items])
     .where(transactions: {result: 'success'})
     .group(:id)
     .order("sum(invoice_items.quantity * invoice_items.unit_price) DESC")
@@ -62,6 +63,10 @@ class Merchant < ApplicationRecord
     .order('merchant_count DESC')
     .limit(1)
     .first
+  end
+
+  def customer_pending_invoices
+    
   end
 
 end
